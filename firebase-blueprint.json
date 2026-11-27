@@ -1,0 +1,690 @@
+{
+  "entities": {
+    "StaffAccount": {
+      "title": "StaffAccount",
+      "description": "Approved dealership employee account with role hierarchy, granular permissions, and active status.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 160
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "role": {
+          "type": "string",
+          "enum": ["quan_ly", "le_tan", "co_van", "dat_hen"]
+        },
+        "roleTitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "assignedAdvisorName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "avatar": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "department": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "employeeCode": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "isActive": {
+          "type": "boolean"
+        },
+        "uid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "permissions": {
+          "type": "object",
+          "description": "Granular feature permission flags for this staff member."
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "approvedBy": {
+          "type": "string",
+          "maxLength": 160
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "fullName",
+        "role",
+        "roleTitle",
+        "isActive",
+        "permissions",
+        "createdAt"
+      ]
+    },
+    "AdvisorProfile": {
+      "title": "AdvisorProfile",
+      "description": "Non-PII operational directory profile automatically created for each active Service Advisor (co_van) account.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "avatar": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "isActive": {
+          "type": "boolean"
+        },
+        "updatedAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "name", "role", "isActive"]
+    },
+    "AccessRequest": {
+      "title": "AccessRequest",
+      "description": "Pending employee access request submitted after first Google Sign-In for manager approval.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 160
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "avatar": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "requestedRole": {
+          "type": "string",
+          "enum": ["le_tan", "co_van", "dat_hen"]
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "rejected"]
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "id",
+        "uid",
+        "email",
+        "fullName",
+        "requestedRole",
+        "status",
+        "createdAt"
+      ]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "Workshop service appointment scheduled on a bay and time slot.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "licensePlate": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 30
+        },
+        "advisorName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "advisorAvatar": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "serviceTypes": {
+          "type": "array",
+          "description": "Bounded list of up to 10 service types."
+        },
+        "customerName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "phoneNumber": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "bookingStaff": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Chờ Tiếp Nhận", "Đã Xác Nhận", "Đang Làm", "Hoàn Thành", "Đã Hủy"]
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["Thường", "Ưu Tiên", "VIP", "Gấp", "Khách Chờ Lấy Liền"]
+        },
+        "location": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "appointmentDate": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "appointmentTime": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5,
+          "pattern": "^[0-9]{2}:[0-9]{2}$"
+        },
+        "durationMinutes": {
+          "type": "number"
+        },
+        "bayId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "bayName": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "cardColor": {
+          "type": "string",
+          "enum": ["purple", "green", "pink", "blue", "amber"]
+        },
+        "createdByUid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "createdByEmail": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "createdByName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "updatedByEmail": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "updatedByName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "id",
+        "licensePlate",
+        "advisorName",
+        "serviceTypes",
+        "customerName",
+        "status",
+        "priority",
+        "location",
+        "appointmentDate",
+        "appointmentTime",
+        "durationMinutes",
+        "bayId",
+        "content"
+      ]
+    },
+    "ReceptionEntry": {
+      "title": "ReceptionEntry",
+      "description": "Vehicle check-in record created at Reception desk.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "licensePlate": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 30
+        },
+        "hasAppointment": {
+          "type": "boolean"
+        },
+        "appointmentId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "appointmentTime": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "appointmentContent": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "suggestedAdvisorName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "advisorName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "cardTicketNumber": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "cardSlotCode": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "serviceTypes": {
+          "type": "array",
+          "description": "Bounded list of up to 10 service types."
+        },
+        "customerName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "phoneNumber": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "checkInTime": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 10
+        },
+        "checkInDate": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Chờ Tiếp Nhận",
+            "Đang Tiếp Nhận",
+            "Đã Tiếp Nhận",
+            "Cố Vấn Đang Tiếp Nhận",
+            "Đã Vào Khoang",
+            "Đang Sửa Chữa",
+            "Chờ Rửa Xe",
+            "Chờ Giao Xe",
+            "Đã Giao Xe",
+            "Hoàn Thành"
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "badgeType": {
+          "type": "string",
+          "enum": ["H", "S", "T", ""]
+        },
+        "deliveryDate": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "carWash": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "customerWaiting": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "priority": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "location": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "assignedAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "assignedByName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "receivedAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "deliveredAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "createdByUid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "createdByEmail": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "createdByName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "updatedByEmail": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "updatedByName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "updatedAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "id",
+        "licensePlate",
+        "hasAppointment",
+        "advisorName",
+        "cardTicketNumber",
+        "cardSlotCode",
+        "serviceTypes",
+        "customerName",
+        "checkInTime",
+        "checkInDate",
+        "status"
+      ]
+    },
+    "WorkshopSettings": {
+      "title": "WorkshopSettings",
+      "description": "Dealership workshop configuration and Google Sheets sync metadata.",
+      "type": "object",
+      "properties": {
+        "workshopName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "branchName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "phoneNumber": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "address": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "autoSyncInterval": {
+          "type": "number"
+        },
+        "allowReceptionCheckInWithoutAppointment": {
+          "type": "boolean"
+        },
+        "defaultDurationMinutes": {
+          "type": "number"
+        },
+        "spreadsheetId": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "spreadsheetUrl": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "sheetTitle": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "isAutoSyncEnabled": {
+          "type": "boolean"
+        },
+        "syncIntervalSeconds": {
+          "type": "number"
+        },
+        "lastSyncedAt": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "updatedAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["workshopName", "branchName"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Immutable operational audit log recording employee actions.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "targetType": {
+          "type": "string",
+          "enum": ["appointment", "reception", "staff", "settings", "auth"]
+        },
+        "targetId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "actorUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "actorEmail": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 160
+        },
+        "actorName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "actorRole": {
+          "type": "string",
+          "enum": ["quan_ly", "le_tan", "co_van", "dat_hen"]
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "id",
+        "action",
+        "targetType",
+        "summary",
+        "actorUid",
+        "actorEmail",
+        "actorName",
+        "actorRole",
+        "createdAt"
+      ]
+    },
+    "AdvisorPickupRequest": {
+      "title": "AdvisorPickupRequest",
+      "description": "Real-time 2-way handoff signal sent by a Service Advisor when ready to receive the next vehicle from Reception.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "advisorUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "advisorName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "advisorAvatar": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "status": {
+          "type": "string",
+          "enum": ["waiting"]
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "advisorUid", "advisorName", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/staff/{staffId}": {
+      "schema": { "$ref": "#/entities/StaffAccount" },
+      "description": "Manager-approved employee allowlist keyed by deterministic sanitized email ID."
+    },
+    "/accessRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/AccessRequest" },
+      "description": "Pending Google account access requests awaiting manager approval."
+    },
+    "/appointments/{appointmentId}": {
+      "schema": { "$ref": "#/entities/Appointment" },
+      "description": "Workshop service appointments synchronized in real time across departments."
+    },
+    "/receptionEntries/{entryId}": {
+      "schema": { "$ref": "#/entities/ReceptionEntry" },
+      "description": "Reception check-in queue records synchronized in real time."
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/WorkshopSettings" },
+      "description": "Dealership configuration and Google Sheets sync settings."
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Immutable operational audit logs readable only by managers."
+    },
+    "/advisors/{advisorId}": {
+      "schema": { "$ref": "#/entities/AdvisorProfile" },
+      "description": "Non-PII directory of active Service Advisor accounts readable by all active staff."
+    },
+    "/advisorRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/AdvisorPickupRequest" },
+      "description": "Live 2-way vehicle pickup requests from Service Advisors to Reception."
+    }
+  }
+}
